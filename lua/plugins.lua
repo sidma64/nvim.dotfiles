@@ -2,6 +2,12 @@ return {
 
   -- Personal Changes
   {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons" }
+    }
+  },
+  {
     'mhartington/formatter.nvim'
   },
   {
