@@ -1,6 +1,7 @@
 return {
 
   -- Personal Changes
+  "b0o/schemastore.nvim",
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = {
