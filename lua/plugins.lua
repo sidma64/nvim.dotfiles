@@ -1,7 +1,7 @@
 return {
 	"folke/which-key.nvim",
 	{ "folke/neoconf.nvim", cmd = "Neoconf" },
-	--  "folke/neodev.nvim",
+	"folke/neodev.nvim",
 	{
 		"ellisonleao/gruvbox.nvim",
 		priority = 1000,
@@ -10,39 +10,8 @@ return {
 	},
 	{
 		"neovim/nvim-lspconfig",
-		config = function()
-			require("lspconfig").lua_ls.setup({
-				on_init = function(client)
-					local path = client.workspace_folders[1].name
-					if not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. "/.luarc.jsonc") then
-						client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-							Lua = {
-								runtime = {
-									-- Tell the language server which version of Lua you're using
-									-- (most likely LuaJIT in the case of Neovim)
-									version = "LuaJIT",
-								},
-								-- Make the server aware of Neovim runtime files
-								workspace = {
-									checkThirdParty = false,
-									library = {
-										vim.env.VIMRUNTIME,
-										-- "${3rd}/luv/library"
-										-- "${3rd}/busted/library",
-									},
-									-- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-									-- library = vim.api.nvim_get_runtime_file("", true)
-								},
-							},
-						})
-						client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-					end
-					return true
-				end,
-			})
-		end,
 	},
-	"hrsh7th/nvim-cmp",
+	--"hrsh7th/nvim-cmp",
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 	{
 		"ray-x/go.nvim",
@@ -51,45 +20,46 @@ return {
 			"neovim/nvim-lspconfig",
 			"nvim-treesitter/nvim-treesitter",
 		},
-		config = function()
-			require("go").setup()
-		end,
+		opts = {},
 		event = { "CmdlineEnter" },
 		ft = { "go", "gomod" },
 		build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		config = function()
-			require("nvim-treesitter.configs").setup({
-				-- A list of parser names, or "all" (the five listed parsers should always be installed)
-				ensure_installed = {
-					"typescript",
-					"javascript",
-					"graphql",
-					"c",
-					"lua",
-					"vim",
-					"vimdoc",
-					"query",
-					"go",
-					"cmake",
-					"cpp",
-					"python",
-				},
-				highlight = {
-					enable = true,
-					-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-					-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-					-- Using this option may slow down your editor, and you may see some duplicate highlights.
-					-- Instead of true it can also be a list of languages
-					additional_vim_regex_highlighting = false,
-				},
-				indent = {
-					enable = false,
-				},
-			})
-		end,
+		opts = {
+			-- A list of parser names, or "all" (the five listed parsers should always be installed)
+			ensure_installed = {
+				"typescript",
+				"javascript",
+				"graphql",
+				"c",
+				"lua",
+				"vim",
+				"vimdoc",
+				"query",
+				"go",
+				"cmake",
+				"cpp",
+				"python",
+				"swift",
+			},
+			auto_install = false,
+			sync_install = false,
+			modules = {},
+			ignore_install = {},
+			highlight = {
+				enable = true,
+				-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+				-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+				-- Using this option may slow down your editor, and you may see some duplicate highlights.
+				-- Instead of true it can also be a list of languages
+				additional_vim_regex_highlighting = false,
+			},
+			indent = {
+				enable = false,
+			},
+		},
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -103,9 +73,7 @@ return {
 	},
 	{
 		"nmac427/guess-indent.nvim",
-		config = function()
-			require("guess-indent").setup()
-		end,
+		opts = {},
 	},
 	-- Lua
 	{
@@ -131,31 +99,49 @@ return {
 			-- refer to the configuration section below
 		},
 	},
-	{
-		"L3MON4D3/LuaSnip",
-		-- follow latest release.
-		version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-		-- install jsregexp (optional!).
-		build = "make install_jsregexp",
-		dependencies = { "rafamadriz/friendly-snippets" },
-	},
+	-- {
+	-- 	"L3MON4D3/LuaSnip",
+	-- 	-- follow latest release.
+	-- 	version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+	-- 	-- install jsregexp (optional!).
+	-- 	build = "make install_jsregexp",
+	-- 	dependencies = { "rafamadriz/friendly-snippets" },
+	-- },
 	{
 		"stevearc/conform.nvim",
-		opts = {},
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+				-- Conform will run multiple formatters sequentially
+				python = { "isort", "black" },
+				javascript = { { "prettierd", "prettier" } },
+				typescript = { { "prettierd", "prettier" } },
+				cpp = { "clang_format" },
+				c = { "clang_format" },
+				go = { "gofmt" },
+			},
+		},
+	},
+	{
+		"echasnovski/mini.nvim",
+		version = "*",
 		config = function()
-			require("conform").setup({
-				formatters_by_ft = {
-					lua = { "stylua" },
-					-- Conform will run multiple formatters sequentially
-					python = { "isort", "black" },
-					-- Use a sub-list to run only the first available formatter
-					javascript = { { "prettierd", "prettier" } },
-					cpp = { "clang_format" },
-					typescript = { { "prettierd", "prettier" } },
-					c = { "clang_format" },
-					go = { "gofmt" },
-				},
-			})
+			require("mini.comment").setup()
+			require("mini.completion").setup()
 		end,
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		opts = {},
+	},
+	"nvim-lua/lsp-status.nvim",
+	{
+		"akinsho/bufferline.nvim",
+		opts = {},
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		opts = {extensions = {"neo-tree", "lazy"}},
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 }

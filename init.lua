@@ -17,7 +17,7 @@ vim.opt.number = true
 
 require("lazy").setup(require("plugins"))
 
-require("luasnip.loaders.from_vscode").lazy_load()
+-- require("luasnip.loaders.from_vscode").lazy_load()
 
 -- To set the Leader key in Neovim using Lua, you can add the following line to your init.lua file:
 vim.g.mapleader = " "
@@ -31,6 +31,7 @@ vim.cmd("set shiftwidth=2")
 vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set autoindent")
+vim.opt.relativenumber = true
 
 local wk = require("which-key")
 
@@ -60,5 +61,23 @@ wk.register({
 			end,
 			"Format with conform.nvim",
 		},
+		l = {
+			name = "LSP commands",
+			s = {
+				vim.lsp.buf.hover,
+				"Show information for item on cursor",
+			},
+			f = { vim.lsp.buf.format, "Format with LSP" },
+			a = { vim.lsp.buf.code_action, "Code action" },
+			d = { vim.lsp.buf.definition, "Jump to definition" }
+		},
 	},
 })
+
+require("lspconfig").tsserver.setup({})
+require("lspconfig").pyright.setup({})
+require("neodev").setup()
+require("lspconfig").lua_ls.setup({})
+require("lspconfig").clangd.setup({})
+require("lspconfig").cssls.setup({})
+require("lspconfig").html.setup({})
