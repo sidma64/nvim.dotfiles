@@ -37,7 +37,45 @@ vim.opt.relativenumber = true
 
 local wk = require("which-key")
 
-wk.register()
+wk.register({
+	["<leader>"] = {
+		p = {
+			name = "persistence.nvim",
+			l = {
+				function()
+					require("persistence").load({ last = true })
+				end,
+				"Load last session",
+			},
+			s = { require("persistence").load, "Restore session for the current directory" },
+			d = { require("persistence").stop, "Stop persistence.nvim" },
+		},
+		s = { "<cmd>Neotree<cr>", "Open neo-tree.nvim" },
+		q = {
+			name = "Quit commands",
+			q = { vim.cmd.quit, "Quit window" },
+			a = { vim.cmd.quitall, "Quit Vim" },
+		},
+		w = { vim.cmd.write, "Write" },
+		f = {
+			function()
+				require("conform").format({ bufnr = vim.api.nvim_get_current_buf() })
+			end,
+			"Format with conform.nvim",
+		},
+		l = {
+			name = "LSP commands",
+			s = {
+				vim.lsp.buf.hover,
+				"Show information for item on cursor",
+			},
+			f = { vim.lsp.buf.format, "Format with LSP" },
+			a = { vim.lsp.buf.code_action, "Code action" },
+			d = { vim.lsp.buf.definition, "Jump to definition" },
+			D = { vim.lsp.buf.declaration, "Jump to declaration"}
+		},
+	},
+})
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
