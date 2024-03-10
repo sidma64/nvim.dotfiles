@@ -32,7 +32,6 @@ vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set autoindent")
 vim.opt.relativenumber = true
-vim.cmd[[highlight SignColumn guibg=NONE]]
 
 local wk = require("which-key")
 
