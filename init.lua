@@ -34,6 +34,7 @@ vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set autoindent")
 vim.opt.relativenumber = true
+vim.cmd([[highlight SignColumn guibg=NONE]])
 
 local wk = require("which-key")
 
@@ -58,6 +59,13 @@ wk.register({
 		},
 		w = { vim.cmd.write, "Write" },
 		f = {
+			name = "Telescope.nvim commands",
+			f = { require("telescope.builtin").find_files, "Find files" },
+			b = { require("telescope.builtin").buffers, "Find buffers" },
+			g = { require("telescope.builtin").live_grep, "Live grep" },
+			h = { require("telescope.builtin").help_tags, "Help tags" },
+		},
+		F = {
 			function()
 				require("conform").format({ bufnr = vim.api.nvim_get_current_buf() })
 			end,
@@ -72,7 +80,7 @@ wk.register({
 			f = { vim.lsp.buf.format, "Format with LSP" },
 			a = { vim.lsp.buf.code_action, "Code action" },
 			d = { vim.lsp.buf.definition, "Jump to definition" },
-			D = { vim.lsp.buf.declaration, "Jump to declaration"}
+			D = { vim.lsp.buf.declaration, "Jump to declaration" },
 		},
 	},
 })
