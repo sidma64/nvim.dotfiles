@@ -16,12 +16,15 @@ return {
 					require("luasnip").lsp_expand(args.body)
 				end,
 			},
-			sources = cmp.config.sources({
-				{ name = "nvim_lsp" },
-				{ name = "luasnip" },
-			}, {
-				{ name = "buffer" },
-			}),
+			sources = cmp.config.sources(
+				{
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+				}
+				--			,{
+				--				{ name = "buffer" },
+				--			}
+			),
 			mapping = {
 				["<Tab>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
@@ -46,6 +49,14 @@ return {
 					end
 				end, { "i", "s" }),
 			},
+		})
+		cmp.setup.cmdline(":", {
+			mapping = cmp.mapping.preset.cmdline(),
+			sources = cmp.config.sources({
+				{ name = "path" },
+			}, {
+				{ name = "cmdline" },
+			}),
 		})
 	end,
 	dependencies = {
