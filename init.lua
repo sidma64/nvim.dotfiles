@@ -24,6 +24,8 @@ vim.g.mapleader = " "
 
 -- Example mapping using the Leader key
 
+vim.g.neovide_fullscreen = true
+
 vim.cmd("colorscheme gruvbox")
 vim.cmd("set background=dark")
 vim.cmd("set expandtab")
@@ -35,49 +37,24 @@ vim.opt.relativenumber = true
 
 local wk = require("which-key")
 
-wk.register({
-	["<leader>"] = {
-		p = {
-			name = "persistence.nvim",
-			l = {
-				function()
-					require("persistence").load({ last = true })
-				end,
-				"Load last session",
+wk.register()
+
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+require("lspconfig").tsserver.setup({ capabilities = capabilities })
+require("lspconfig").pyright.setup({ capabilities = capabilities })
+require("neodev").setup()
+require("lspconfig").lua_ls.setup({
+	capabilities = capabilities,
+	settings = {
+		Lua = {
+			hint = {
+				enable = true,
 			},
-			s = { require("persistence").load, "Restore session for the current directory" },
-			d = { require("persistence").stop, "Stop persistence.nvim" },
-		},
-		s = { "<cmd>Neotree<cr>", "Open neo-tree.nvim" },
-		q = {
-			name = "Quit commands",
-			q = { vim.cmd.quit, "Quit window" },
-			a = { vim.cmd.quitall, "Quit Vim" },
-		},
-		w = { vim.cmd.write, "Write" },
-		f = {
-			function()
-				require("conform").format({ bufnr = vim.api.nvim_get_current_buf() })
-			end,
-			"Format with conform.nvim",
-		},
-		l = {
-			name = "LSP commands",
-			s = {
-				vim.lsp.buf.hover,
-				"Show information for item on cursor",
-			},
-			f = { vim.lsp.buf.format, "Format with LSP" },
-			a = { vim.lsp.buf.code_action, "Code action" },
-			d = { vim.lsp.buf.definition, "Jump to definition" }
 		},
 	},
 })
-
-require("lspconfig").tsserver.setup({})
-require("lspconfig").pyright.setup({})
-require("neodev").setup()
-require("lspconfig").lua_ls.setup({})
-require("lspconfig").clangd.setup({})
-require("lspconfig").cssls.setup({})
-require("lspconfig").html.setup({})
+require("lspconfig").clangd.setup({ capabilities = capabilities })
+require("lspconfig").cssls.setup({ capabilities = capabilities })
+require("lspconfig").html.setup({ capabilities = capabilities })
+require("lspconfig").gopls.setup({ capabilities = capabilities })

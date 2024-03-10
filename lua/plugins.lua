@@ -11,7 +11,65 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 	},
-	--"hrsh7th/nvim-cmp",
+	{
+		"hrsh7th/nvim-cmp",
+		config = function()
+			local has_words_before = function()
+				unpack = unpack or table.unpack
+				local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+				return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+			end
+
+			local luasnip = require("luasnip")
+			local cmp = require("cmp")
+
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						require('luasnip').lsp_expand(args.body)
+					end,
+				},
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = 'luasnip' },
+				}, {
+					{ name = "buffer" },
+				}),
+				mapping = {
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item()
+						-- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+						-- that way you will only jump inside the snippet region
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						elseif has_words_before() then
+							cmp.complete()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item()
+						elseif luasnip.jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+				},
+			})
+		end,
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"neovim/nvim-lspconfig",
+			"hrsh7th/cmp-buffer",
+			"saadparwaiz1/cmp_luasnip",
+			"L3MON4D3/LuaSnip",
+			"hrsh7th/cmp-cmdline",
+		},
+	},
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 	{
 		"ray-x/go.nvim",
@@ -99,14 +157,14 @@ return {
 			-- refer to the configuration section below
 		},
 	},
-	-- {
-	-- 	"L3MON4D3/LuaSnip",
-	-- 	-- follow latest release.
-	-- 	version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-	-- 	-- install jsregexp (optional!).
-	-- 	build = "make install_jsregexp",
-	-- 	dependencies = { "rafamadriz/friendly-snippets" },
-	-- },
+	{
+		"L3MON4D3/LuaSnip",
+		-- follow latest release.
+		version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+		-- install jsregexp (optional!).
+		build = "make install_jsregexp",
+		dependencies = { "rafamadriz/friendly-snippets" },
+	},
 	{
 		"stevearc/conform.nvim",
 		opts = {
@@ -127,7 +185,6 @@ return {
 		version = "*",
 		config = function()
 			require("mini.comment").setup()
-			require("mini.completion").setup()
 		end,
 	},
 	{
@@ -141,7 +198,12 @@ return {
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		opts = {extensions = {"neo-tree", "lazy"}},
+		opts = { extensions = { "neo-tree", "lazy" } },
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+	{
+		"nvim-telescope/telescope.nvim",
+		tag = "0.1.5",
+		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 }
