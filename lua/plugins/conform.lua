@@ -5,8 +5,8 @@ return {
 			lua = { "stylua" },
 			-- Conform will run multiple formatters sequentially
 			python = { "isort", "black" },
-			javascript = { { "prettierd", "prettier" } },
-			typescript = { { "prettierd", "prettier" } },
+			javascript = { "prettier" },
+			typescript = { "prettier" },
 			cpp = { "clang_format" },
 			c = { "clang_format" },
 			go = { "gofmt" },
