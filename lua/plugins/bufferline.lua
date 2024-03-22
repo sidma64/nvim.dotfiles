@@ -1,8 +1,10 @@
 return {
 	"akinsho/bufferline.nvim",
-	opts = {},
 	config = function()
 		vim.opt.termguicolors = true
-		require("bufferline").setup{}
-	end
+		require("bufferline").setup({
+			highlights = require("catppuccin.groups.integrations.bufferline").get(),
+		})
+	end,
+	dependencies = { "catppuccin/nvim" },
 }
