@@ -6,6 +6,8 @@ return {
 			-- Conform will run multiple formatters sequentially
 			python = { "isort", "black" },
 			javascript = { "prettier" },
+			javascriptreact = { "prettier" },
+			typescriptreact = { "prettier" },
 			typescript = { "prettier" },
 			cpp = { "clang_format" },
 			c = { "clang_format" },
