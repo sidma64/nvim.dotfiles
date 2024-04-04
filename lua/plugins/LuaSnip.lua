@@ -1,5 +1,8 @@
 return {
 	"L3MON4D3/LuaSnip",
+	config = function()
+		require("luasnip.loaders.from_vscode").lazy_load()
+	end,
 	-- follow latest release.
 	version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
 	-- install jsregexp (optional!).

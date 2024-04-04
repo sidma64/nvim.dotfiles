@@ -1,5 +1,5 @@
 vim.opt.background = "dark"
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "gruvbox"
 vim.cmd([[highlight SignColumn guibg=NONE]])
 
 vim.cmd([[set expandtab]])
@@ -10,4 +10,3 @@ vim.cmd([[set autoindent]])
 vim.opt.relativenumber = true
 vim.opt.number = true
 
-vim.g.neovide_fullscreen = true

@@ -35,14 +35,17 @@ return {
 		},
 		l = {
 			name = "LSP commands",
-			s = {
-				vim.lsp.buf.hover,
-				"Show information for item on cursor",
-			},
+			s = { vim.lsp.buf.hover, "Show information for item on cursor" },
 			f = { vim.lsp.buf.format, "Format with LSP" },
 			a = { vim.lsp.buf.code_action, "Code action" },
 			d = { vim.lsp.buf.definition, "Jump to definition" },
 			D = { vim.lsp.buf.declaration, "Jump to declaration" },
 		},
 	},
+	g = {
+		d = { vim.lsp.buf.definition, "Goto definition" },
+		r = { vim.lsp.buf.references, "Goto references" },
+		D = { vim.lsp.buf.declaration, "Goto declaration" },
+	},
+	K = { vim.lsp.buf.hover, "Hover LSP" },
 }
