@@ -1,18 +1,19 @@
 return {
 	["<F12>"] = { vim.lsp.buf.definition, "Jump to definition" },
 	["<c-F12>"] = { vim.lsp.buf.declaration, "Jump to declaration" },
+	["<F2>"] = {MiniFiles.open, "Open mini.files"},
 	["<leader>"] = {
-		p = {
-			name = "persistence.nvim",
-			l = {
-				function()
-					require("persistence").load({ last = true })
-				end,
-				"Load last session",
-			},
-			s = { require("persistence").load, "Restore session for the current directory" },
-			d = { require("persistence").stop, "Stop persistence.nvim" },
-		},
+		-- p = {
+		-- 	name = "persistence.nvim",
+		-- 	l = {
+		-- 		function()
+		-- 			require("persistence").load({ last = true })
+		-- 		end,
+		-- 		"Load last session",
+		-- 	},
+		-- 	s = { require("persistence").load, "Restore session for the current directory" },
+		-- 	d = { require("persistence").stop, "Stop persistence.nvim" },
+		-- },
 		s = { "<cmd>Neotree<cr>", "Open neo-tree.nvim" },
 		q = {
 			name = "Quit commands",
