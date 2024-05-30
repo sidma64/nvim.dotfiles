@@ -9,4 +9,4 @@ vim.cmd([[set softtabstop=2]])
 vim.cmd([[set autoindent]])
 vim.opt.relativenumber = true
 vim.opt.number = true
-
+-- vim.opt.clipboard = "unnamedplus"
