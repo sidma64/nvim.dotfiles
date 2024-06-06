@@ -14,8 +14,8 @@ return {
 			go = { "gofmt" },
 			sh = { "shfmt" },
 			java = { "google-java-format" },
-			prisma = { "prettier" },
-			json = {"prettier"}
+			prisma = { "prettier", "prettierd" },
+			json = {"prettier", "prettierd"}
 		},
 	},
 }
