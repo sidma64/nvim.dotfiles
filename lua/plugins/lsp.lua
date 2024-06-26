@@ -35,10 +35,10 @@ return {
 			cmake = {
 				settings = {
 					CMake = {
-						filetypes = {"cmake", "CMakeLists.txt"}
-					}
-				}
-			}
+						filetypes = { "cmake", "CMakeLists.txt" },
+					},
+				},
+			},
 		}
 
 		local default_config = {
@@ -47,7 +47,22 @@ return {
 
 		require("mason").setup()
 		local mason_lspconfig = require("mason-lspconfig")
-		mason_lspconfig.setup({ensure_installed = {"lua_ls", "clangd", "gopls", "graphql", "html", "jsonls", "svelte", "tsserver", "cssls", "vuels", "pyright", "cmake"}})
+		mason_lspconfig.setup({
+			ensure_installed = {
+				"lua_ls",
+				"clangd",
+				"gopls",
+				"graphql",
+				"html",
+				"jsonls",
+				"svelte",
+				"tsserver",
+				"cssls",
+				"vuels",
+				"pyright",
+				"cmake",
+			},
+		})
 		mason_lspconfig.setup_handlers({
 			function(server_name)
 				local config = vim.tbl_deep_extend("force", default_config, server_configs[server_name] or {})

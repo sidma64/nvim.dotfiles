@@ -1,5 +1,3 @@
-vim.opt.background = "dark"
-vim.cmd.colorscheme "gruvbox"
 vim.cmd([[highlight SignColumn guibg=NONE]])
 
 vim.cmd([[set expandtab]])

@@ -15,7 +15,8 @@ return {
 			sh = { "shfmt" },
 			java = { "google-java-format" },
 			prisma = { "prettier", "prettierd" },
-			json = {"prettier", "prettierd"}
+			json = {"prettier", "prettierd"},
+			rust = {"rustfmt"}
 		},
 	},
 }
