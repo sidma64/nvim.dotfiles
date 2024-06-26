@@ -3,12 +3,11 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "folke/neodev.nvim", opts = {} },
-		"williamboman/mason.nvim",
 		"b0o/schemastore.nvim",
-		"williamboman/mason-lspconfig.nvim",
 	},
 	config = function()
-		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		require("neodev").setup({})
+
 		local server_configs = {
 			jsonls = {
 				settings = {
@@ -39,35 +38,26 @@ return {
 					},
 				},
 			},
+			rust_analyzer = {},
+			tsserver = {},
+			pyright = {},
+			lua_ls = {},
+			clangd = {},
+			taplo = {},
+			html = {},
+			cssls = {},
+			cssmodules_ls = {},
+			graphql = {},
+
 		}
 
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 		local default_config = {
 			capabilities = capabilities,
 		}
-
-		require("mason").setup()
-		local mason_lspconfig = require("mason-lspconfig")
-		mason_lspconfig.setup({
-			ensure_installed = {
-				"lua_ls",
-				"clangd",
-				"gopls",
-				"graphql",
-				"html",
-				"jsonls",
-				"svelte",
-				"tsserver",
-				"cssls",
-				"vuels",
-				"pyright",
-				"cmake",
-			},
-		})
-		mason_lspconfig.setup_handlers({
-			function(server_name)
-				local config = vim.tbl_deep_extend("force", default_config, server_configs[server_name] or {})
-				require("lspconfig")[server_name].setup(config)
-			end,
-		})
+		for k, v in pairs(server_configs) do
+			local config = vim.tbl_deep_extend("force", default_config, v)
+			require("lspconfig")[k].setup(config)
+		end
 	end,
 }
